@@ -1,0 +1,386 @@
+{
+  "info": {
+    "name": "E-Bookstore API",
+    "description": "12-step customer journey — mock JSON backed Spring Boot API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "ebookstore-mock-api-v1"
+  },
+  "item": [
+    {
+      "name": "📚 Catalog",
+      "item": [
+        {
+          "name": "Step 1 — Browse All Books",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/catalog/books",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "catalog", "books"]
+            }
+          }
+        },
+        {
+          "name": "Step 1b — Search Books (query)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/catalog/books?search=sci-fi",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "catalog", "books"],
+              "query": [{ "key": "search", "value": "sci-fi" }]
+            }
+          }
+        },
+        {
+          "name": "Step 2 — Filter by Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/catalog/books/category/CAT002",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "catalog", "books", "category", "CAT002"]
+            }
+          }
+        },
+        {
+          "name": "Step 3 — Featured Books",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/catalog/books/featured",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "catalog", "books", "featured"]
+            }
+          }
+        },
+        {
+          "name": "Step 4 — Book Detail",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/catalog/books/B001",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "catalog", "books", "B001"]
+            }
+          }
+        },
+        {
+          "name": "Admin — Create Book",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"The Pragmatic Programmer\",\n  \"author\": \"Andrew Hunt\",\n  \"publisher\": \"Addison-Wesley\",\n  \"isbn\": \"9780135957059\",\n  \"categoryId\": \"CAT005\",\n  \"brand\": \"Addison-Wesley\",\n  \"description\": \"From journeyman to master.\",\n  \"language\": \"English\",\n  \"pages\": 352,\n  \"format\": \"PAPERBACK\",\n  \"price\": 39.99,\n  \"discountPercent\": 0,\n  \"stock\": 25,\n  \"featured\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/catalog/books",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "catalog", "books"]
+            }
+          }
+        },
+        {
+          "name": "Admin — Update Book",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"The Martian Chronicles (Updated)\",\n  \"author\": \"Ray Bradbury\",\n  \"price\": 12.99,\n  \"stock\": 50,\n  \"featured\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/catalog/books/B001",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "catalog", "books", "B001"]
+            }
+          }
+        },
+        {
+          "name": "Admin — Delete Book",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/catalog/books/B001",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "catalog", "books", "B001"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🗂️ Categories",
+      "item": [
+        {
+          "name": "List All Categories",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/categories", "host": ["{{baseUrl}}"], "path": ["api","v1","categories"] }
+          }
+        },
+        {
+          "name": "Root Categories Only",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/categories/root", "host": ["{{baseUrl}}"], "path": ["api","v1","categories","root"] }
+          }
+        },
+        {
+          "name": "Children of CAT001",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/categories/CAT001/children", "host": ["{{baseUrl}}"], "path": ["api","v1","categories","CAT001","children"] }
+          }
+        },
+        {
+          "name": "Get Category by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/categories/CAT005", "host": ["{{baseUrl}}"], "path": ["api","v1","categories","CAT005"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🛒 Cart",
+      "item": [
+        {
+          "name": "Step 5 — View Cart",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/members/M001/cart", "host": ["{{baseUrl}}"], "path": ["api","v1","members","M001","cart"] }
+          }
+        },
+        {
+          "name": "Get Cart Total",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/members/M001/cart/total", "host": ["{{baseUrl}}"], "path": ["api","v1","members","M001","cart","total"] }
+          }
+        },
+        {
+          "name": "Step 6 — Add Item to Cart",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bookId\": \"B005\",\n  \"quantity\": 1\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/members/M001/cart/items", "host": ["{{baseUrl}}"], "path": ["api","v1","members","M001","cart","items"] }
+          }
+        },
+        {
+          "name": "Step 7 — Update Item Quantity",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"quantity\": 3 }"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/members/M001/cart/items/B005", "host": ["{{baseUrl}}"], "path": ["api","v1","members","M001","cart","items","B005"] }
+          }
+        },
+        {
+          "name": "Remove Item from Cart",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/api/v1/members/M001/cart/items/B005", "host": ["{{baseUrl}}"], "path": ["api","v1","members","M001","cart","items","B005"] }
+          }
+        },
+        {
+          "name": "Clear Cart",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/api/v1/members/M001/cart", "host": ["{{baseUrl}}"], "path": ["api","v1","members","M001","cart"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📦 Orders",
+      "item": [
+        {
+          "name": "Step 8 — Place Order (Checkout)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"memberId\": \"M001\",\n  \"items\": [\n    { \"bookId\": \"B005\", \"title\": \"Atomic Habits\", \"quantity\": 1, \"unitPrice\": 18.00, \"discountPercent\": 0 },\n    { \"bookId\": \"B004\", \"title\": \"Clean Code\", \"quantity\": 1, \"unitPrice\": 45.99, \"discountPercent\": 15 }\n  ],\n  \"subtotal\": 63.99,\n  \"discountAmount\": 6.90,\n  \"taxAmount\": 4.57,\n  \"shippingFee\": 0.00,\n  \"totalAmount\": 61.66,\n  \"shippingAddressId\": \"A001\",\n  \"paymentId\": \"PAY001\",\n  \"notes\": \"Gift wrap please\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/orders", "host": ["{{baseUrl}}"], "path": ["api","v1","orders"] }
+          }
+        },
+        {
+          "name": "Step 9 — Order History for Member",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/orders/member/M001", "host": ["{{baseUrl}}"], "path": ["api","v1","orders","member","M001"] }
+          }
+        },
+        {
+          "name": "Get Single Order",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/orders/ORD001", "host": ["{{baseUrl}}"], "path": ["api","v1","orders","ORD001"] }
+          }
+        },
+        {
+          "name": "Admin — List All Orders",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/orders", "host": ["{{baseUrl}}"], "path": ["api","v1","orders"] }
+          }
+        },
+        {
+          "name": "Step 10 — Update Order Status",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"status\": \"PROCESSING\" }"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/orders/ORD002/status", "host": ["{{baseUrl}}"], "path": ["api","v1","orders","ORD002","status"] }
+          }
+        },
+        {
+          "name": "Cancel Order",
+          "request": {
+            "method": "PATCH",
+            "url": { "raw": "{{baseUrl}}/api/v1/orders/ORD003/cancel", "host": ["{{baseUrl}}"], "path": ["api","v1","orders","ORD003","cancel"] }
+          }
+        },
+        {
+          "name": "Step 11 — Track Shipment",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/orders/ORD001/shipment", "host": ["{{baseUrl}}"], "path": ["api","v1","orders","ORD001","shipment"] }
+          }
+        },
+        {
+          "name": "Admin — Create Shipment",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"carrier\": \"FedEx\",\n  \"trackingNumber\": \"FX999000111US\",\n  \"status\": \"IN_TRANSIT\",\n  \"estimatedDelivery\": \"2025-06-05\",\n  \"origin\": \"Austin, TX\",\n  \"destination\": \"123 Maple St, Austin, TX\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/orders/ORD003/shipment", "host": ["{{baseUrl}}"], "path": ["api","v1","orders","ORD003","shipment"] }
+          }
+        },
+        {
+          "name": "Get Payment for Order",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/orders/ORD001/payment", "host": ["{{baseUrl}}"], "path": ["api","v1","orders","ORD001","payment"] }
+          }
+        },
+        {
+          "name": "Step 12 — Update Payment Status (Capture)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"status\": \"CAPTURED\" }"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/orders/ORD002/payment/status", "host": ["{{baseUrl}}"], "path": ["api","v1","orders","ORD002","payment","status"] }
+          }
+        },
+        {
+          "name": "Step 12b — Update Payment Status (Refund)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"status\": \"REFUNDED\", \"refundAmount\": 58.56 }"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/orders/ORD001/payment/status", "host": ["{{baseUrl}}"], "path": ["api","v1","orders","ORD001","payment","status"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "👤 Members",
+      "item": [
+        {
+          "name": "Register New Member",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Dan\",\n  \"lastName\": \"Stone\",\n  \"email\": \"dan.stone@example.com\",\n  \"phone\": \"+1-555-0404\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/members/register", "host": ["{{baseUrl}}"], "path": ["api","v1","members","register"] }
+          }
+        },
+        {
+          "name": "Get Member by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/members/M001", "host": ["{{baseUrl}}"], "path": ["api","v1","members","M001"] }
+          }
+        },
+        {
+          "name": "List All Members (admin)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/members", "host": ["{{baseUrl}}"], "path": ["api","v1","members"] }
+          }
+        },
+        {
+          "name": "Update Member Profile",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Alice\",\n  \"lastName\": \"Walker\",\n  \"email\": \"alice.walker@example.com\",\n  \"phone\": \"+1-555-9999\",\n  \"status\": \"ACTIVE\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/members/M001", "host": ["{{baseUrl}}"], "path": ["api","v1","members","M001"] }
+          }
+        },
+        {
+          "name": "Delete Member (admin)",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/api/v1/members/M001", "host": ["{{baseUrl}}"], "path": ["api","v1","members","M001"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏪 Store",
+      "item": [
+        {
+          "name": "Get Store Info",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/store", "host": ["{{baseUrl}}"], "path": ["api","v1","store"] }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ]
+}

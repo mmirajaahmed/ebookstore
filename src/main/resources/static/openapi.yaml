@@ -1,0 +1,1150 @@
+openapi: 3.0.3
+info:
+  title: E-Bookstore API
+  description: |
+    REST API for the E-Bookstore platform.
+    
+    Backed by local mock JSON data during development.
+    No live database connection is required.
+    
+    ## 12-Step Customer Journey
+    1. **Browse Catalog** — `GET /api/v1/catalog/books`
+    2. **Filter by Category** — `GET /api/v1/catalog/books/category/{categoryId}`
+    3. **View Featured** — `GET /api/v1/catalog/books/featured`
+    4. **Book Detail** — `GET /api/v1/catalog/books/{id}`
+    5. **View Cart** — `GET /api/v1/members/{memberId}/cart`
+    6. **Add to Cart** — `POST /api/v1/members/{memberId}/cart/items`
+    7. **Update Cart** — `PUT /api/v1/members/{memberId}/cart/items/{bookId}`
+    8. **Checkout / Place Order** — `POST /api/v1/orders`
+    9. **Order History** — `GET /api/v1/orders/member/{memberId}`
+    10. **Update Order Status** — `PATCH /api/v1/orders/{orderId}/status`
+    11. **Track Shipment** — `GET /api/v1/orders/{orderId}/shipment`
+    12. **Payment Update** — `PATCH /api/v1/orders/{orderId}/payment/status`
+  version: 1.0.0
+  contact:
+    name: E-Bookstore Engineering
+    email: eng@ebookstore.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+
+servers:
+  - url: http://localhost:8080
+    description: Local Development Server
+
+tags:
+  - name: Catalog
+    description: Browse books, filter, view details
+  - name: Categories
+    description: Category taxonomy
+  - name: Cart
+    description: Shopping cart per member
+  - name: Orders
+    description: Order lifecycle, shipment, payment
+  - name: Members
+    description: Member registration and profile
+  - name: Store
+    description: Store configuration
+
+paths:
+
+  # ── CATALOG ──────────────────────────────────────────────────────────────────
+
+  /api/v1/catalog/books:
+    get:
+      tags: [Catalog]
+      summary: Browse catalog (Step 1)
+      operationId: browseBooks
+      parameters:
+        - name: search
+          in: query
+          required: false
+          description: Full-text search across title, author, tags
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+    post:
+      tags: [Catalog]
+      summary: Create a new book (admin)
+      operationId: createBook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+
+  /api/v1/catalog/books/featured:
+    get:
+      tags: [Catalog]
+      summary: Get featured books (Step 3)
+      operationId: getFeaturedBooks
+      responses:
+        '200':
+          description: List of featured books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+
+  /api/v1/catalog/books/category/{categoryId}:
+    get:
+      tags: [Catalog]
+      summary: Filter by category (Step 2)
+      operationId: booksByCategory
+      parameters:
+        - name: categoryId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Filtered book list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+
+  /api/v1/catalog/books/{id}:
+    get:
+      tags: [Catalog]
+      summary: Get book detail (Step 4)
+      operationId: getBook
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Book detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [Catalog]
+      summary: Update a book (admin)
+      operationId: updateBook
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      responses:
+        '200':
+          description: Updated book
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+    delete:
+      tags: [Catalog]
+      summary: Delete a book (admin)
+      operationId: deleteBook
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Deleted
+
+  # ── CATEGORIES ───────────────────────────────────────────────────────────────
+
+  /api/v1/categories:
+    get:
+      tags: [Categories]
+      summary: List all categories
+      operationId: listAllCategories
+      responses:
+        '200':
+          description: Category list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+    post:
+      tags: [Categories]
+      summary: Create category (admin)
+      operationId: createCategory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      responses:
+        '201':
+          description: Created category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+
+  /api/v1/categories/root:
+    get:
+      tags: [Categories]
+      summary: Root categories only
+      operationId: listRootCategories
+      responses:
+        '200':
+          description: Root category list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+
+  /api/v1/categories/{id}:
+    get:
+      tags: [Categories]
+      summary: Get category by ID
+      operationId: getCategoryById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [Categories]
+      summary: Update category (admin)
+      operationId: updateCategory
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      responses:
+        '200':
+          description: Updated category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+    delete:
+      tags: [Categories]
+      summary: Delete category (admin)
+      operationId: deleteCategory
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Deleted
+
+  /api/v1/categories/{id}/children:
+    get:
+      tags: [Categories]
+      summary: Sub-categories of a parent
+      operationId: listChildCategories
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Sub-category list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+
+  # ── CART ─────────────────────────────────────────────────────────────────────
+
+  /api/v1/members/{memberId}/cart:
+    get:
+      tags: [Cart]
+      summary: View cart (Step 5)
+      operationId: getCart
+      parameters:
+        - name: memberId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Cart
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+    delete:
+      tags: [Cart]
+      summary: Clear entire cart
+      operationId: clearCart
+      parameters:
+        - name: memberId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Cleared
+
+  /api/v1/members/{memberId}/cart/total:
+    get:
+      tags: [Cart]
+      summary: Get cart total
+      operationId: getCartTotal
+      parameters:
+        - name: memberId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Total amount
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: number
+
+  /api/v1/members/{memberId}/cart/items:
+    post:
+      tags: [Cart]
+      summary: Add item to cart (Step 6)
+      operationId: addCartItem
+      parameters:
+        - name: memberId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [bookId, quantity]
+              properties:
+                bookId:
+                  type: string
+                  example: B001
+                quantity:
+                  type: integer
+                  example: 2
+      responses:
+        '200':
+          description: Updated cart
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+
+  /api/v1/members/{memberId}/cart/items/{bookId}:
+    put:
+      tags: [Cart]
+      summary: Update item quantity (Step 7)
+      operationId: updateCartItem
+      parameters:
+        - name: memberId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: bookId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [quantity]
+              properties:
+                quantity:
+                  type: integer
+      responses:
+        '200':
+          description: Updated cart
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+    delete:
+      tags: [Cart]
+      summary: Remove item from cart
+      operationId: removeCartItem
+      parameters:
+        - name: memberId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: bookId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Updated cart
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+
+  # ── ORDERS ───────────────────────────────────────────────────────────────────
+
+  /api/v1/orders:
+    get:
+      tags: [Orders]
+      summary: List all orders (admin)
+      operationId: getAllOrders
+      responses:
+        '200':
+          description: All orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+    post:
+      tags: [Orders]
+      summary: Place new order / checkout (Step 8)
+      operationId: placeOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        '201':
+          description: Order created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+
+  /api/v1/orders/member/{memberId}:
+    get:
+      tags: [Orders]
+      summary: Order history for member (Step 9)
+      operationId: orderHistory
+      parameters:
+        - name: memberId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Order list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+
+  /api/v1/orders/{orderId}:
+    get:
+      tags: [Orders]
+      summary: Get order by ID
+      operationId: getOrder
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /api/v1/orders/{orderId}/status:
+    patch:
+      tags: [Orders]
+      summary: Update order status (Step 10)
+      operationId: updateOrderStatus
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status:
+                  type: string
+                  enum: [PENDING, PROCESSING, SHIPPED, DELIVERED, CANCELLED, REFUNDED]
+      responses:
+        '200':
+          description: Updated order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+
+  /api/v1/orders/{orderId}/cancel:
+    patch:
+      tags: [Orders]
+      summary: Cancel an order
+      operationId: cancelOrder
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Cancelled order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+
+  /api/v1/orders/{orderId}/shipment:
+    get:
+      tags: [Orders]
+      summary: Get shipment tracking (Step 11)
+      operationId: getShipment
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Shipment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shipment'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      tags: [Orders]
+      summary: Attach shipment to order (admin)
+      operationId: createShipment
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Shipment'
+      responses:
+        '201':
+          description: Created shipment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shipment'
+
+  /api/v1/orders/{orderId}/payment:
+    get:
+      tags: [Orders]
+      summary: Get payment for order
+      operationId: getPayment
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Payment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      tags: [Orders]
+      summary: Record payment for order
+      operationId: createPayment
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Payment'
+      responses:
+        '201':
+          description: Created payment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+
+  /api/v1/orders/{orderId}/payment/status:
+    patch:
+      tags: [Orders]
+      summary: Update payment status (Step 12)
+      operationId: updatePaymentStatus
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status:
+                  type: string
+                  enum: [PENDING, AUTHORIZED, CAPTURED, FAILED, REFUNDED, CANCELLED]
+                refundAmount:
+                  type: number
+      responses:
+        '200':
+          description: Updated payment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+
+  # ── MEMBERS ──────────────────────────────────────────────────────────────────
+
+  /api/v1/members:
+    get:
+      tags: [Members]
+      summary: List all members (admin)
+      operationId: listAllMembers
+      responses:
+        '200':
+          description: Member list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Member'
+
+  /api/v1/members/register:
+    post:
+      tags: [Members]
+      summary: Register new member
+      operationId: registerMember
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Member'
+      responses:
+        '201':
+          description: Registered member
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+        '409':
+          $ref: '#/components/responses/Conflict'
+
+  /api/v1/members/{id}:
+    get:
+      tags: [Members]
+      summary: Get member by ID
+      operationId: getMemberById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Member
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [Members]
+      summary: Update member profile
+      operationId: updateMember
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Member'
+      responses:
+        '200':
+          description: Updated member
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+    delete:
+      tags: [Members]
+      summary: Delete member (admin)
+      operationId: deleteMember
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Deleted
+
+  # ── STORE ────────────────────────────────────────────────────────────────────
+
+  /api/v1/store:
+    get:
+      tags: [Store]
+      summary: Get store info
+      operationId: getStore
+      responses:
+        '200':
+          description: Store config
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Store'
+
+  /api/v1/store/{id}:
+    put:
+      tags: [Store]
+      summary: Update store config (admin)
+      operationId: updateStore
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Store'
+      responses:
+        '200':
+          description: Updated store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Store'
+
+# ── COMPONENTS ────────────────────────────────────────────────────────────────
+
+components:
+  schemas:
+
+    Book:
+      type: object
+      properties:
+        id:
+          type: string
+          example: B001
+        title:
+          type: string
+          example: The Martian Chronicles
+        author:
+          type: string
+          example: Ray Bradbury
+        publisher:
+          type: string
+        isbn:
+          type: string
+        categoryId:
+          type: string
+          example: CAT002
+        brand:
+          type: string
+        description:
+          type: string
+        language:
+          type: string
+          example: English
+        pages:
+          type: integer
+        format:
+          type: string
+          enum: [PAPERBACK, HARDCOVER, EBOOK, AUDIOBOOK]
+        price:
+          type: number
+          format: double
+          example: 14.99
+        discountPercent:
+          type: integer
+          example: 10
+        stock:
+          type: integer
+        rating:
+          type: number
+          format: double
+        reviewCount:
+          type: integer
+        coverImageUrl:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        publishedDate:
+          type: string
+          format: date
+        featured:
+          type: boolean
+
+    Category:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        parentId:
+          type: string
+          nullable: true
+        imageUrl:
+          type: string
+        displayOrder:
+          type: integer
+
+    Cart:
+      type: object
+      properties:
+        id:
+          type: string
+        memberId:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItem'
+        updatedAt:
+          type: string
+          format: date-time
+
+    CartItem:
+      type: object
+      properties:
+        bookId:
+          type: string
+        title:
+          type: string
+        coverImageUrl:
+          type: string
+        quantity:
+          type: integer
+        unitPrice:
+          type: number
+        discountPercent:
+          type: integer
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+        memberId:
+          type: string
+        status:
+          type: string
+          enum: [PENDING, PROCESSING, SHIPPED, DELIVERED, CANCELLED, REFUNDED]
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+        subtotal:
+          type: number
+        discountAmount:
+          type: number
+        taxAmount:
+          type: number
+        shippingFee:
+          type: number
+        totalAmount:
+          type: number
+        shippingAddressId:
+          type: string
+        paymentId:
+          type: string
+        shipmentId:
+          type: string
+        notes:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    OrderItem:
+      type: object
+      properties:
+        bookId:
+          type: string
+        title:
+          type: string
+        quantity:
+          type: integer
+        unitPrice:
+          type: number
+        discountPercent:
+          type: integer
+
+    Shipment:
+      type: object
+      properties:
+        id:
+          type: string
+        orderId:
+          type: string
+        carrier:
+          type: string
+        trackingNumber:
+          type: string
+        status:
+          type: string
+          enum: [PENDING, IN_TRANSIT, OUT_FOR_DELIVERY, DELIVERED, FAILED]
+        estimatedDelivery:
+          type: string
+          format: date
+        actualDelivery:
+          type: string
+          format: date-time
+          nullable: true
+        origin:
+          type: string
+        destination:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Payment:
+      type: object
+      properties:
+        id:
+          type: string
+        orderId:
+          type: string
+        memberId:
+          type: string
+        method:
+          type: string
+          enum: [CREDIT_CARD, DEBIT_CARD, PAYPAL, APPLE_PAY, GOOGLE_PAY]
+        provider:
+          type: string
+        transactionId:
+          type: string
+        status:
+          type: string
+          enum: [PENDING, AUTHORIZED, CAPTURED, FAILED, REFUNDED, CANCELLED]
+        amount:
+          type: number
+        currency:
+          type: string
+        cardLast4:
+          type: string
+          nullable: true
+        cardBrand:
+          type: string
+          nullable: true
+        refundAmount:
+          type: number
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Member:
+      type: object
+      properties:
+        id:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        role:
+          type: string
+          enum: [CUSTOMER, ADMIN]
+        status:
+          type: string
+          enum: [ACTIVE, SUSPENDED, DELETED]
+        loyaltyPoints:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Store:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        contactEmail:
+          type: string
+        currency:
+          type: string
+        taxRate:
+          type: number
+        freeShippingThreshold:
+          type: number
+        standardShippingFee:
+          type: number
+        status:
+          type: string
+          enum: [OPEN, CLOSED, MAINTENANCE]
+
+    ErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Conflict:
+      description: Business rule conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'

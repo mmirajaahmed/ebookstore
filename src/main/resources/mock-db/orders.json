@@ -1,0 +1,61 @@
+[
+  {
+    "id": "ORD001",
+    "memberId": "M001",
+    "status": "DELIVERED",
+    "items": [
+      { "bookId": "B001", "title": "The Martian Chronicles", "quantity": 1, "unitPrice": 14.99, "discountPercent": 10 },
+      { "bookId": "B005", "title": "Atomic Habits", "quantity": 2, "unitPrice": 18.00, "discountPercent": 0 }
+    ],
+    "subtotal": 50.99,
+    "discountAmount": 1.50,
+    "taxAmount": 4.08,
+    "shippingFee": 4.99,
+    "totalAmount": 58.56,
+    "shippingAddressId": "A001",
+    "paymentId": "PAY001",
+    "shipmentId": "SHP001",
+    "notes": "",
+    "createdAt": "2025-01-10T10:00:00Z",
+    "updatedAt": "2025-01-14T15:30:00Z"
+  },
+  {
+    "id": "ORD002",
+    "memberId": "M002",
+    "status": "PROCESSING",
+    "items": [
+      { "bookId": "B004", "title": "Clean Code", "quantity": 1, "unitPrice": 45.99, "discountPercent": 15 },
+      { "bookId": "B008", "title": "Designing Data-Intensive Applications", "quantity": 1, "unitPrice": 59.99, "discountPercent": 20 }
+    ],
+    "subtotal": 105.98,
+    "discountAmount": 18.91,
+    "taxAmount": 7.77,
+    "shippingFee": 0.00,
+    "totalAmount": 94.84,
+    "shippingAddressId": "A002",
+    "paymentId": "PAY002",
+    "shipmentId": "SHP002",
+    "notes": "Please leave at reception.",
+    "createdAt": "2025-05-20T09:15:00Z",
+    "updatedAt": "2025-05-20T09:20:00Z"
+  },
+  {
+    "id": "ORD003",
+    "memberId": "M001",
+    "status": "PENDING",
+    "items": [
+      { "bookId": "B010", "title": "Zero to One", "quantity": 1, "unitPrice": 23.00, "discountPercent": 12 }
+    ],
+    "subtotal": 23.00,
+    "discountAmount": 2.76,
+    "taxAmount": 1.62,
+    "shippingFee": 4.99,
+    "totalAmount": 26.85,
+    "shippingAddressId": "A001",
+    "paymentId": "PAY003",
+    "shipmentId": null,
+    "notes": "",
+    "createdAt": "2025-06-01T18:00:00Z",
+    "updatedAt": "2025-06-01T18:00:00Z"
+  }
+]

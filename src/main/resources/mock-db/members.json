@@ -1,0 +1,77 @@
+[
+  {
+    "id": "M001",
+    "firstName": "Alice",
+    "lastName": "Walker",
+    "email": "alice.walker@example.com",
+    "passwordHash": "$2a$12$KIXtPlaceholderHashForAlice",
+    "phone": "+1-555-0101",
+    "role": "CUSTOMER",
+    "status": "ACTIVE",
+    "loyaltyPoints": 320,
+    "shippingAddresses": [
+      {
+        "addressId": "A001",
+        "label": "Home",
+        "street": "123 Maple St",
+        "city": "Austin",
+        "state": "TX",
+        "zip": "78701",
+        "country": "US",
+        "isDefault": true
+      }
+    ],
+    "createdAt": "2024-01-15T09:00:00Z",
+    "updatedAt": "2025-03-10T14:22:00Z"
+  },
+  {
+    "id": "M002",
+    "firstName": "Brian",
+    "lastName": "Chen",
+    "email": "brian.chen@example.com",
+    "passwordHash": "$2a$12$KIXtPlaceholderHashForBrian",
+    "phone": "+1-555-0202",
+    "role": "CUSTOMER",
+    "status": "ACTIVE",
+    "loyaltyPoints": 150,
+    "shippingAddresses": [
+      {
+        "addressId": "A002",
+        "label": "Office",
+        "street": "456 Commerce Ave",
+        "city": "Seattle",
+        "state": "WA",
+        "zip": "98101",
+        "country": "US",
+        "isDefault": true
+      }
+    ],
+    "createdAt": "2024-03-20T11:30:00Z",
+    "updatedAt": "2025-04-01T08:45:00Z"
+  },
+  {
+    "id": "M003",
+    "firstName": "Clara",
+    "lastName": "Diaz",
+    "email": "clara.diaz@example.com",
+    "passwordHash": "$2a$12$KIXtPlaceholderHashForClara",
+    "phone": "+1-555-0303",
+    "role": "ADMIN",
+    "status": "ACTIVE",
+    "loyaltyPoints": 900,
+    "shippingAddresses": [
+      {
+        "addressId": "A003",
+        "label": "Home",
+        "street": "789 Elm Road",
+        "city": "Chicago",
+        "state": "IL",
+        "zip": "60601",
+        "country": "US",
+        "isDefault": true
+      }
+    ],
+    "createdAt": "2023-11-01T07:00:00Z",
+    "updatedAt": "2025-05-15T10:00:00Z"
+  }
+]

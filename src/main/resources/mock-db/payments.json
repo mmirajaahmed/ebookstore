@@ -1,0 +1,53 @@
+[
+  {
+    "id": "PAY001",
+    "orderId": "ORD001",
+    "memberId": "M001",
+    "method": "CREDIT_CARD",
+    "provider": "Stripe",
+    "transactionId": "txn_stripe_001abc",
+    "status": "CAPTURED",
+    "amount": 58.56,
+    "currency": "USD",
+    "cardLast4": "4242",
+    "cardBrand": "Visa",
+    "billingAddressId": "A001",
+    "refundAmount": null,
+    "createdAt": "2025-01-10T10:05:00Z",
+    "updatedAt": "2025-01-10T10:06:00Z"
+  },
+  {
+    "id": "PAY002",
+    "orderId": "ORD002",
+    "memberId": "M002",
+    "method": "PAYPAL",
+    "provider": "PayPal",
+    "transactionId": "pp_txn_002def",
+    "status": "AUTHORIZED",
+    "amount": 94.84,
+    "currency": "USD",
+    "cardLast4": null,
+    "cardBrand": null,
+    "billingAddressId": "A002",
+    "refundAmount": null,
+    "createdAt": "2025-05-20T09:16:00Z",
+    "updatedAt": "2025-05-20T09:17:00Z"
+  },
+  {
+    "id": "PAY003",
+    "orderId": "ORD003",
+    "memberId": "M001",
+    "method": "CREDIT_CARD",
+    "provider": "Stripe",
+    "transactionId": "txn_stripe_003ghi",
+    "status": "PENDING",
+    "amount": 26.85,
+    "currency": "USD",
+    "cardLast4": "4242",
+    "cardBrand": "Visa",
+    "billingAddressId": "A001",
+    "refundAmount": null,
+    "createdAt": "2025-06-01T18:01:00Z",
+    "updatedAt": "2025-06-01T18:01:00Z"
+  }
+]

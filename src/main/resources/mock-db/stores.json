@@ -1,0 +1,24 @@
+[
+  {
+    "id": "STORE001",
+    "name": "E-Bookstore Main",
+    "slug": "main",
+    "description": "Your one-stop digital and print book destination.",
+    "logoUrl": "/images/store-logo.png",
+    "bannerUrl": "/images/store-banner.jpg",
+    "contactEmail": "support@ebookstore.com",
+    "contactPhone": "+1-800-BOOKSHOP",
+    "currency": "USD",
+    "taxRate": 0.08,
+    "freeShippingThreshold": 35.00,
+    "standardShippingFee": 4.99,
+    "status": "OPEN",
+    "socialLinks": {
+      "twitter": "https://twitter.com/ebookstore",
+      "instagram": "https://instagram.com/ebookstore",
+      "facebook": "https://facebook.com/ebookstore"
+    },
+    "createdAt": "2023-01-01T00:00:00Z",
+    "updatedAt": "2025-06-01T00:00:00Z"
+  }
+]

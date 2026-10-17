@@ -1,0 +1,37 @@
+[
+  {
+    "id": "SHP001",
+    "orderId": "ORD001",
+    "carrier": "FedEx",
+    "trackingNumber": "FX123456789US",
+    "status": "DELIVERED",
+    "estimatedDelivery": "2025-01-14",
+    "actualDelivery": "2025-01-14T12:10:00Z",
+    "origin": "Austin, TX",
+    "destination": "123 Maple St, Austin, TX 78701",
+    "events": [
+      { "timestamp": "2025-01-10T14:00:00Z", "location": "Austin, TX", "description": "Package picked up" },
+      { "timestamp": "2025-01-12T06:30:00Z", "location": "Dallas, TX", "description": "In transit" },
+      { "timestamp": "2025-01-14T12:10:00Z", "location": "Austin, TX", "description": "Delivered to recipient" }
+    ],
+    "createdAt": "2025-01-10T14:00:00Z",
+    "updatedAt": "2025-01-14T12:10:00Z"
+  },
+  {
+    "id": "SHP002",
+    "orderId": "ORD002",
+    "carrier": "UPS",
+    "trackingNumber": "UPS987654321US",
+    "status": "IN_TRANSIT",
+    "estimatedDelivery": "2025-05-23",
+    "actualDelivery": null,
+    "origin": "Seattle, WA",
+    "destination": "456 Commerce Ave, Seattle, WA 98101",
+    "events": [
+      { "timestamp": "2025-05-20T11:00:00Z", "location": "Seattle, WA", "description": "Package picked up" },
+      { "timestamp": "2025-05-21T08:45:00Z", "location": "Portland, OR", "description": "In transit" }
+    ],
+    "createdAt": "2025-05-20T11:00:00Z",
+    "updatedAt": "2025-05-21T08:45:00Z"
+  }
+]

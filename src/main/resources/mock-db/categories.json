@@ -1,0 +1,74 @@
+[
+  {
+    "id": "CAT001",
+    "name": "Fiction",
+    "slug": "fiction",
+    "description": "Imaginative storytelling across every sub-genre.",
+    "parentId": null,
+    "imageUrl": "/images/categories/fiction.jpg",
+    "displayOrder": 1
+  },
+  {
+    "id": "CAT002",
+    "name": "Science Fiction",
+    "slug": "science-fiction",
+    "description": "Futuristic worlds, technology, and space exploration.",
+    "parentId": "CAT001",
+    "imageUrl": "/images/categories/sci-fi.jpg",
+    "displayOrder": 2
+  },
+  {
+    "id": "CAT003",
+    "name": "Mystery & Thriller",
+    "slug": "mystery-thriller",
+    "description": "Suspense, crime, and detective fiction.",
+    "parentId": "CAT001",
+    "imageUrl": "/images/categories/mystery.jpg",
+    "displayOrder": 3
+  },
+  {
+    "id": "CAT004",
+    "name": "Non-Fiction",
+    "slug": "non-fiction",
+    "description": "Fact-based works across all fields of knowledge.",
+    "parentId": null,
+    "imageUrl": "/images/categories/non-fiction.jpg",
+    "displayOrder": 4
+  },
+  {
+    "id": "CAT005",
+    "name": "Technology",
+    "slug": "technology",
+    "description": "Programming, AI, cloud, and software engineering.",
+    "parentId": "CAT004",
+    "imageUrl": "/images/categories/technology.jpg",
+    "displayOrder": 5
+  },
+  {
+    "id": "CAT006",
+    "name": "Self-Help",
+    "slug": "self-help",
+    "description": "Personal development, mindset, and productivity.",
+    "parentId": "CAT004",
+    "imageUrl": "/images/categories/self-help.jpg",
+    "displayOrder": 6
+  },
+  {
+    "id": "CAT007",
+    "name": "Business & Finance",
+    "slug": "business-finance",
+    "description": "Entrepreneurship, economics, and investment strategies.",
+    "parentId": "CAT004",
+    "imageUrl": "/images/categories/business.jpg",
+    "displayOrder": 7
+  },
+  {
+    "id": "CAT008",
+    "name": "Children",
+    "slug": "children",
+    "description": "Books for young readers aged 4–12.",
+    "parentId": null,
+    "imageUrl": "/images/categories/children.jpg",
+    "displayOrder": 8
+  }
+]
